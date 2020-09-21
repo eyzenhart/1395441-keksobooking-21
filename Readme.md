@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [eyzenhart](https://up.htmlacademy.ru/javascript/21/user/1395441).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Кузнецов](https://htmlacademy.ru/profile/maxkuznetsov).
 
 ---
 
