@@ -40,19 +40,18 @@ var getType = function(list) {
     typeList.push(list[listItem]);
   };
   return typeList[getRandomIntOnInterval(0, typeList.length)];
-}
+};
 
 
 var getFeatures = function(arr) {
   var featureFragment = document.createDocumentFragment();
-  for (var feature in arr) {
+  arr.forEach(function(item) {
     var newFeature = document.createElement('li');
-    newFeature.classList.add('popup__feature');
-    newFeature.classList.add('popup__feature--' + arr[feature])
+    newFeature.classList.add('popup__feature', 'popup__feature--' + arr[feature]);
     featureFragment.appendChild(newFeature);
-  };
+  });
   return featureFragment;
-}
+};
 
 
 var getQuantity = function(arr) {
@@ -65,7 +64,7 @@ var getQuantity = function(arr) {
       }
   }
   return quantity;
-}
+};
 
 
 var getPhotos = function(arr) {
@@ -73,17 +72,17 @@ var getPhotos = function(arr) {
   arr.forEach(function(item) {
     var photo = document.createElement('img');
     photo.src = item;
-    photo.className = 'popup__photo';
+    photo.classList.add('popup__photo');
     photo.width = 45;
     photo.height = 40;
     photo.alt = "Фотография жилья";
     photoFragment.appendChild(photo);
   });
   return photoFragment;
-}
+};
 
 
-var createAdData = function(number) {
+var createAdsData = function(number) {
   var ads = [];
   for (var i = 0; i < number; i++) {
     var ad = {
@@ -111,32 +110,31 @@ var createAdData = function(number) {
     ads.push(ad);
   }
  return ads;
-}
-
-
-var createAdElements = function(data) {
-  var adElements = [];
-  data.forEach(function (item) {
-    var adElement = cardTemplate.cloneNode(true);
-    adElement.querySelector('.popup__avatar').src = item.author.avatar;
-    adElement.querySelector('.popup__title').textContent = item.offer.title;
-    adElement.querySelector('.popup__text--address').textContent = item.offer.address;
-    adElement.querySelector('.popup__text--price').textContent = item.offer.price;
-    adElement.querySelector('.popup__type').textContent = item.offer.type;
-    adElement.querySelector('.popup__text--capacity').textContent = item.offer.rooms + ' комнаты для ' + item.offer.guests + ' гостей';
-    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + item.offer.checkin + ', выезд до ' + item.offer.checkout;
-    adElement.querySelector('.popup__feature').textContent = item.offer.features;
-    adElement.querySelector('.popup__description').textContent = item.offer.description;
-    adElement.querySelector('.popup__photos').appendChild(getPhotos(photos)); //хрень
-
-    // adElement.querySelector('.popup__photo').src = item.offer.photos;
-    adElements.push(adElement);
-  });
-  return adElements;
 };
 
 
-var createPinElement = function(data) {
+var adsData = createAdsData(MAX_ADS);
+
+
+var createAdElements = function(data) {
+    var adElement = cardTemplate.cloneNode(true);
+    adElement.querySelector('.popup__avatar').src = data[0].author.avatar;
+    adElement.querySelector('.popup__title').textContent = data[0].offer.title;
+    adElement.querySelector('.popup__text--address').textContent = data[0].offer.address;
+    adElement.querySelector('.popup__text--price').textContent = data[0].offer.price;
+    adElement.querySelector('.popup__type').textContent = data[0].offer.type;
+    adElement.querySelector('.popup__text--capacity').textContent = data[0].offer.rooms + ' комнаты для ' + data[0].offer.guests + ' гостей';
+    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data[0].offer.checkin + ', выезд до ' + data[0].offer.checkout;
+    adElement.querySelector('.popup__feature').textContent = data[0].offer.features;
+    adElement.querySelector('.popup__description').textContent = data[0].offer.description;
+    adElement.querySelector('.popup__photos').appendChild(getPhotos(photos)); //хрень
+
+    // adElement.querySelector('.popup__photo').src = item.offer.photos;
+  return adElement;
+};
+
+
+var createPinElements = function(data) {
   var pinElements = [];
   data.forEach(function (item) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -149,19 +147,16 @@ var createPinElement = function(data) {
 
 
 var renderCard = function() {
-  var adData = createAdData(1);
-  var adElement = createAdElements(adData);
+  var adElement = createAdElements(adsData);
   var cardFragment = document.createDocumentFragment();
-  adElement.forEach(function(item) {
-    cardFragment.appendChild(item);
-  });
+  cardFragment.appendChild(adElement);
   map.appendChild(cardFragment);
 }
 
 
 var renderPins = function() {
-  var adsData = createAdData(MAX_ADS);
-  var pinsElements = createPinElement(adsData);
+  var adsData = createAdsData(MAX_ADS);
+  var pinsElements = createPinElements(adsData);
   var fragment = document.createDocumentFragment();
   pinsElements.forEach(function(item) {
     fragment.appendChild(item);
@@ -174,8 +169,6 @@ renderCard();
 renderPins();
 
 
-
-// var adsData = createAdData(MAX_ADS);
 
 
 
