@@ -116,22 +116,23 @@ var createAdsData = function(number) {
 var adsData = createAdsData(MAX_ADS);
 
 
-var createAdElements = function(data) {
+var createAdElements = function(data, number) {
     var adElement = cardTemplate.cloneNode(true);
-    adElement.querySelector('.popup__avatar').src = data[0].author.avatar;
-    adElement.querySelector('.popup__title').textContent = data[0].offer.title;
-    adElement.querySelector('.popup__text--address').textContent = data[0].offer.address;
-    adElement.querySelector('.popup__text--price').textContent = data[0].offer.price;
-    adElement.querySelector('.popup__type').textContent = data[0].offer.type;
-    adElement.querySelector('.popup__text--capacity').textContent = data[0].offer.rooms + ' комнаты для ' + data[0].offer.guests + ' гостей';
-    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data[0].offer.checkin + ', выезд до ' + data[0].offer.checkout;
-    adElement.querySelector('.popup__feature').textContent = data[0].offer.features;
-    adElement.querySelector('.popup__description').textContent = data[0].offer.description;
+    adElement.querySelector('.popup__avatar').src = data[number].author.avatar;
+    adElement.querySelector('.popup__title').textContent = data[number].offer.title;
+    adElement.querySelector('.popup__text--address').textContent = data[number].offer.address;
+    adElement.querySelector('.popup__text--price').textContent = data[number].offer.price;
+    adElement.querySelector('.popup__type').textContent = data[number].offer.type;
+    adElement.querySelector('.popup__text--capacity').textContent = data[number].offer.rooms + ' комнаты для ' + data[number].offer.guests + ' гостей';
+    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data[number].offer.checkin + ', выезд до ' + data[number].offer.checkout;
+    adElement.querySelector('.popup__feature').textContent = data[number].offer.features;
+    adElement.querySelector('.popup__description').textContent = data[number].offer.description;
     adElement.querySelector('.popup__photos').appendChild(getPhotos(photos)); //хрень
-
-    // adElement.querySelector('.popup__photo').src = item.offer.photos;
-  return adElement;
+    return adElement;
 };
+
+
+var card = createAdElements(adsData, 0);
 
 
 var createPinElements = function(data) {
@@ -146,11 +147,8 @@ var createPinElements = function(data) {
 };
 
 
-var renderCard = function() {
-  var adElement = createAdElements(adsData);
-  var cardFragment = document.createDocumentFragment();
-  cardFragment.appendChild(adElement);
-  map.appendChild(cardFragment);
+var renderCard = function(item) {
+  map.appendChild(item);
 }
 
 
@@ -165,26 +163,5 @@ var renderPins = function() {
 
 }
 
-renderCard();
+renderCard(card);
 renderPins();
-
-
-
-
-
-// var adsElements = createAdElements(adsData);
-// var pinsElements = createPinElement(adsData);
-
-// var fragment = document.createDocumentFragment();
-// adsElements.forEach(function(item) {
-//   fragment.appendChild(item);
-// });
-// pinsElements.forEach(function(item) {
-//   fragment.appendChild(item);
-// });
-
-// map.appendChild(fragment);
-
-
-//renderPins отдельная ф-ия
-// отдельно renderCard! одна штука
