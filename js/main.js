@@ -1,5 +1,7 @@
 'use strict';
 
+var MAX_ADS = 8;
+
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
@@ -17,7 +19,6 @@ var type = {
 var titles = ['Квартира с футуристичным ремонтом', 'Жилье с прекрасным видом на город!', 'Отличное место для остановки туристов', 'Недорогое жилье для молодой семьи', 'Дом в роскошном районе'];
 var descriptions = ['Очень просторно, есть все что необходимо.', 'Тихий район, хорошо развита инфраструктура.', 'Евро-ремонт, доброжелательные соседи, круглосуточный рядом', 'Для тех, кто привык жить в роскоши', 'Апартаменты высочайшего класса', 'Уютное и доступное жилье в историческом центре города'];
 
-var MAX_ADS = 8;
 
 map.classList.remove('map--faded');
 
