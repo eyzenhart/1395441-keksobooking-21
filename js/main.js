@@ -116,23 +116,23 @@ var createAdsData = function(number) {
 var adsData = createAdsData(MAX_ADS);
 
 
-var createAdElements = function(data, number) {
+var createAdElements = function(data) {
     var adElement = cardTemplate.cloneNode(true);
-    adElement.querySelector('.popup__avatar').src = data[number].author.avatar;
-    adElement.querySelector('.popup__title').textContent = data[number].offer.title;
-    adElement.querySelector('.popup__text--address').textContent = data[number].offer.address;
-    adElement.querySelector('.popup__text--price').textContent = data[number].offer.price;
-    adElement.querySelector('.popup__type').textContent = data[number].offer.type;
-    adElement.querySelector('.popup__text--capacity').textContent = data[number].offer.rooms + ' комнаты для ' + data[number].offer.guests + ' гостей';
-    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data[number].offer.checkin + ', выезд до ' + data[number].offer.checkout;
-    adElement.querySelector('.popup__feature').textContent = data[number].offer.features;
-    adElement.querySelector('.popup__description').textContent = data[number].offer.description;
+    adElement.querySelector('.popup__avatar').src = data.author.avatar;
+    adElement.querySelector('.popup__title').textContent = data.offer.title;
+    adElement.querySelector('.popup__text--address').textContent = data.offer.address;
+    adElement.querySelector('.popup__text--price').textContent = data.offer.price;
+    adElement.querySelector('.popup__type').textContent = data.offer.type;
+    adElement.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
+    adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
+    adElement.querySelector('.popup__feature').textContent = data.offer.features;
+    adElement.querySelector('.popup__description').textContent = data.offer.description;
     adElement.querySelector('.popup__photos').appendChild(getPhotos(photos)); //хрень
     return adElement;
 };
 
 
-var card = createAdElements(adsData, 0);
+var card = createAdElements(adsData[0]);
 
 
 var createPinElements = function(data) {
@@ -151,17 +151,16 @@ var renderCard = function(item) {
   map.appendChild(item);
 }
 
+var pinsElements = createPinElements(adsData);
 
-var renderPins = function() {
-  var adsData = createAdsData(MAX_ADS);
-  var pinsElements = createPinElements(adsData);
+
+var renderPins = function(list) {
   var fragment = document.createDocumentFragment();
-  pinsElements.forEach(function(item) {
+  list.forEach(function(item) {
     fragment.appendChild(item);
   });
   map.appendChild(fragment);
-
 }
 
 renderCard(card);
-renderPins();
+renderPins(pinsElements);
