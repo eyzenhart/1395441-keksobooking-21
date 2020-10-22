@@ -29,6 +29,12 @@ var descriptions = ['Очень просторно, есть все что не�
 var adRooms = document.querySelector('#room_number');
 var adGuests = document.querySelector('#capacity');
 
+var adType = document.querySelector('#type');
+var adPrice = document.querySelector('#price');
+
+var adTimeIn = document.querySelector('#timein');
+var adTimeOut = document.querySelector('#timeout');
+
 
 adForm.classList.add('ad-form--disabled');
 mapFilters.setAttribute('disabled', 'disabled');
@@ -58,7 +64,7 @@ mainPin.addEventListener('keydown', function(evt) {
 });
 
 
-var handlerCheck = function(event) {
+var handlerGuestsCheck = function(event) {
   for (var i = 0; i < adGuests.length; i++) {
     if (event.target.value === '100') {
       adGuests.options[0].disabled = true;
@@ -91,7 +97,52 @@ var handlerCheck = function(event) {
   }
 };
 
-adRooms.addEventListener('change', handlerCheck, false);
+var handlerPriceCheck = function() {
+  if (adType.value === 'bungalow') {
+    adPrice.placeholder = '0';
+  }
+  else if (adType.value === 'flat') {
+    adPrice.placeholder = '1000';
+    adPrice.min = 1000;
+  }
+  else if (adType.value === 'house') {
+    adPrice.placeholder = '5000';
+    adPrice.min = 5000;
+  }
+  else if (adType.value === 'palace') {
+    adPrice.placeholder = '10000';
+    adPrice.min = 10000;
+  }
+};
+
+var handlerTimeCheck = function(event) {
+  for (var i = 0; i < adTimeOut.length; i++) {
+    if (event.target.value === '12:00') {
+      adTimeOut.options[1].disabled = true;
+      adTimeOut.options[2].disabled = true;
+
+      adTimeOut.options[0].disabled = false;
+    }
+    else if (event.target.value === '13:00') {
+      adTimeOut.options[0].disabled = true;
+      adTimeOut.options[2].disabled = true;
+
+      adTimeOut.options[1].disabled = false;
+    }
+    else if (event.target.value === '14:00') {
+      adTimeOut.options[0].disabled = true;
+      adTimeOut.options[1].disabled = true;
+
+      adTimeOut.options[2].disabled = false;
+    }
+  }
+};
+
+adTimeIn.addEventListener('change', handlerTimeCheck, false);
+
+adType.addEventListener('change', handlerPriceCheck, false);
+
+adRooms.addEventListener('change', handlerGuestsCheck, false);
 
 
 var removeDisability = function() {
