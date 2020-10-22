@@ -27,68 +27,7 @@ var titles = ['Квартира с футуристичным ремонтом',
 var descriptions = ['Очень просторно, есть все что необходимо.', 'Тихий район, хорошо развита инфраструктура.', 'Евро-ремонт, доброжелательные соседи, круглосуточный рядом', 'Для тех, кто привык жить в роскоши', 'Апартаменты высочайшего класса', 'Уютное и доступное жилье в историческом центре города'];
 
 var adRooms = document.querySelector('#room_number');
-var adGuests = document.querySelector('#capacity').querySelectorAll('option');
-
-console.log(adGuests[0]);
-console.log(adRooms.value);
-
-
-//старое
-// var check = function(event) {
-//   if (adRooms.value === 0 && adGuests.value === 3 || adGuests.value === 2 || adGuests.value === 1) {
-//     adRooms.setCustomValidity('Данный тип жилья не предназначен для такого количества гостей');
-//     event.preventDefault();
-//   }
-
-//   else if (adRooms.value === 1 && adGuests.value === 3 || adGuests.value === 2) {
-//     adRooms.setCustomValidity('Данный тип жилья не предназначен для такого количества гостей');
-//     event.preventDefault();
-//   }
-
-//   else if (adRooms.value === 3 && adGuests.value === 3) {
-//     adRooms.setCustomValidity('Данный тип жилья не предназначен для такого количества гостей');
-//     event.preventDefault();
-//   }
-//   else {
-//     adRooms.setCustomValidity('');
-//   }
-// };
-
-//новое, не работает
-var check = function() {
-  for (var i = 0; i < adGuests.length; i++) {
-    if (adRooms.value === '100') {
-      adGuests[0].setAttribute('disabled', 'disabled');
-      adGuests[1].setAttribute('disabled', 'disabled');
-      adGuests[2].setAttribute('disabled', 'disabled');
-    }
-    else if (adRooms.value === '1') {
-      adGuests[0].setAttribute('disabled', 'disabled');
-      adGuests[1].setAttribute('disabled', 'disabled');
-      adGuests[3].setAttribute('disabled', 'disabled');
-    }
-    else if (adRooms.value === '2') {
-      adGuests[0].setAttribute('disabled', 'disabled');
-      adGuests[3].setAttribute('disabled', 'disabled');
-    }
-    else if (adRooms.value === '3') {
-      adGuests[3].setAttribute('disabled', 'disabled');
-    }
-    else {
-      console.log('everything is alright');
-    }
-  }
-};
-
-
-adRooms.addEventListener('change', function() {
-  check()
-});
-
-
-var getAddress = function(data) {
-  mainPinAddress.setAttribute('value', data.offer.address);
-}
+var adGuests = document.querySelector('#capacity');
 
 
 adForm.classList.add('ad-form--disabled');
@@ -97,6 +36,63 @@ adFormHeader.setAttribute('disabled', 'disabled');
 adFormElement.forEach(function(item) {
   item.setAttribute('disabled', 'disabled');
 });
+
+
+
+mainPin.addEventListener('mousedown', function(evt) {
+  if (evt.button === 0) {
+    removeDisability();
+    renderCard(card);
+    renderPins(pinsElements);
+    getAddress(adsData[0]);
+  }
+});
+
+
+mainPin.addEventListener('keydown', function(evt) {
+  if (evt.key === 'Enter') {
+    removeDisability();
+    renderCard(card);
+    renderPins(pinsElements);
+  }
+});
+
+
+var handlerCheck = function(event) {
+  for (var i = 0; i < adGuests.length; i++) {
+    if (event.target.value === '100') {
+      adGuests.options[0].disabled = true;
+      adGuests.options[1].disabled = true;
+      adGuests.options[2].disabled = true;
+
+      adGuests.options[3].disabled = false;
+    }
+    else if (event.target.value === '1') {
+      adGuests.options[0].disabled = true;
+      adGuests.options[1].disabled = true;
+      adGuests.options[3].disabled = true;
+
+      adGuests.options[2].disabled = false;
+    }
+    else if (event.target.value === '2') {
+      adGuests.options[0].disabled = true;
+      adGuests.options[3].disabled = true;
+
+      adGuests.options[1].disabled = false;
+      adGuests.options[2].disabled = false;
+    }
+    else if (event.target.value === '3') {
+      adGuests.options[3].disabled = true;
+
+      adGuests.options[0].disabled = false;
+      adGuests.options[1].disabled = false;
+      adGuests.options[2].disabled = false;
+    }
+  }
+};
+
+adRooms.addEventListener('change', handlerCheck, false);
+
 
 var removeDisability = function() {
   map.classList.remove('map--faded');
@@ -109,22 +105,9 @@ var removeDisability = function() {
 };
 
 
-mainPin.addEventListener('mousedown', function(evt) {
-  if (evt.button === 0) {
-    removeDisability();
-    renderCard(card);
-    renderPins(pinsElements);
-    getAddress(adsData[0]);
-  }
-});
-
-mainPin.addEventListener('keydown', function(evt) {
-  if (evt.key === 'Enter') {
-    removeDisability();
-    renderCard(card);
-    renderPins(pinsElements);
-  }
-});
+var getAddress = function(data) {
+  mainPinAddress.setAttribute('value', data.offer.address);
+};
 
 
 var getRandomIntOnInterval = function(min, max) {
@@ -254,7 +237,7 @@ var createPinElements = function(data) {
 
 var renderCard = function(item) {
   map.appendChild(item);
-}
+};
 
 var pinsElements = createPinElements(adsData);
 
@@ -265,4 +248,4 @@ var renderPins = function(list) {
     fragment.appendChild(item);
   });
   map.appendChild(fragment);
-}
+};
