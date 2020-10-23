@@ -74,7 +74,7 @@ mainPin.addEventListener('keydown', function(evt) {
 });
 
 
-var GuestsCheckHandled = function(event) {
+var handlerGuestsCheck = function(event) {
   for (var i = 0; i < adGuests.length; i++) {
     if (event.target.value === '100') {
       adGuests.options[0].disabled = true;
@@ -107,7 +107,7 @@ var GuestsCheckHandled = function(event) {
   }
 };
 
-var PriceCheckHandled = function() {
+var handlerPriceCheck = function() {
   if (adType.value === 'bungalow') {
     adPrice.placeholder = '0';
   }
@@ -126,19 +126,16 @@ var PriceCheckHandled = function() {
 };
 
 
-var syncHandled = function() {
-  if (!this) {
-    return false;
-  } else {
-    adTimeOut.options[this.selectedIndex].selected = true;
-  }
+var handlerTimeCheck = function() {
+  adTimeOut.options[this.selectedIndex].selected = true;
 };
 
-adTimeIn.addEventListener('change', syncHandled, false);
 
-adType.addEventListener('change', PriceCheckHandled, false);
+adTimeIn.addEventListener('change', handlerTimeCheck, false);
 
-adRooms.addEventListener('change', GuestsCheckHandled, false);
+adType.addEventListener('change', handlerPriceCheck, false);
+
+adRooms.addEventListener('change', handlerGuestsCheck, false);
 
 
 var removeDisability = function() {
@@ -231,7 +228,7 @@ var createAdsData = function(number) {
       },
       offer: {
         title: titles[getRandomInt(titles.length)],
-        address: '(' + getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END) + ')',
+        address: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END),
         price: getRandomInt(10000),
         type: getType(type),
         rooms: getRandomIntOnInterval(1, MAX_ROOMS),
@@ -260,7 +257,7 @@ var createAdElements = function(data) {
     var adElement = cardTemplate.cloneNode(true);
     adElement.querySelector('.popup__avatar').src = data.author.avatar;
     adElement.querySelector('.popup__title').textContent = data.offer.title;
-    adElement.querySelector('.popup__text--address').textContent = data.offer.address;
+    adElement.querySelector('.popup__text--address').textContent = '(' + data.offer.address + ')';
     adElement.querySelector('.popup__text--price').textContent = data.offer.price;
     adElement.querySelector('.popup__type').textContent = data.offer.type;
     adElement.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
