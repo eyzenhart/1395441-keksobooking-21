@@ -1,6 +1,16 @@
 'use strict';
 
 var MAX_ADS = 8;
+var HORIZONTAL_PIN = 10;
+var VERTICAL_PIN = 20;
+var HORIZONTAL_MAP_START = 200;
+var HORIZONTAL_MAP_END = 1200;
+var VERTICAL_MAP_START = 130;
+var VERTICAL_MAP_END = 630;
+var MAX_GUESTS = 3;
+var MAX_ROOMS = 3;
+
+var enter = 'Enter';
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
@@ -37,10 +47,10 @@ var adTimeOut = document.querySelector('#timeout');
 
 
 adForm.classList.add('ad-form--disabled');
-mapFilters.setAttribute('disabled', 'disabled');
-adFormHeader.setAttribute('disabled', 'disabled');
+mapFilters.disabled = true;
+adFormHeader.disabled = true;
 adFormElement.forEach(function(item) {
-  item.setAttribute('disabled', 'disabled');
+  item.disabled = true;
 });
 
 
@@ -50,13 +60,13 @@ mainPin.addEventListener('mousedown', function(evt) {
     removeDisability();
     renderCard(card);
     renderPins(pinsElements);
-    getAddress(adsData[0]);
+    getAddress();
   }
 });
 
 
 mainPin.addEventListener('keydown', function(evt) {
-  if (evt.key === 'Enter') {
+  if (evt.key === enter) {
     removeDisability();
     renderCard(card);
     renderPins(pinsElements);
@@ -64,7 +74,7 @@ mainPin.addEventListener('keydown', function(evt) {
 });
 
 
-var handlerGuestsCheck = function(event) {
+var GuestsCheckHandled = function(event) {
   for (var i = 0; i < adGuests.length; i++) {
     if (event.target.value === '100') {
       adGuests.options[0].disabled = true;
@@ -97,7 +107,7 @@ var handlerGuestsCheck = function(event) {
   }
 };
 
-var handlerPriceCheck = function() {
+var PriceCheckHandled = function() {
   if (adType.value === 'bungalow') {
     adPrice.placeholder = '0';
   }
@@ -115,49 +125,40 @@ var handlerPriceCheck = function() {
   }
 };
 
-var handlerTimeCheck = function(event) {
-  for (var i = 0; i < adTimeOut.length; i++) {
-    if (event.target.value === '12:00') {
-      adTimeOut.options[1].disabled = true;
-      adTimeOut.options[2].disabled = true;
 
-      adTimeOut.options[0].disabled = false;
-    }
-    else if (event.target.value === '13:00') {
-      adTimeOut.options[0].disabled = true;
-      adTimeOut.options[2].disabled = true;
-
-      adTimeOut.options[1].disabled = false;
-    }
-    else if (event.target.value === '14:00') {
-      adTimeOut.options[0].disabled = true;
-      adTimeOut.options[1].disabled = true;
-
-      adTimeOut.options[2].disabled = false;
-    }
+var syncHandled = function() {
+  if (!this) {
+    return false;
+  } else {
+    adTimeOut.options[this.selectedIndex].selected = true;
   }
 };
 
-adTimeIn.addEventListener('change', handlerTimeCheck, false);
+adTimeIn.addEventListener('change', syncHandled, false);
 
-adType.addEventListener('change', handlerPriceCheck, false);
+adType.addEventListener('change', PriceCheckHandled, false);
 
-adRooms.addEventListener('change', handlerGuestsCheck, false);
+adRooms.addEventListener('change', GuestsCheckHandled, false);
 
 
 var removeDisability = function() {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  mapFilters.removeAttribute('disabled', 'disabled');
-  adFormHeader.removeAttribute('disabled', 'disabled');
+  mapFilters.disabled = false;
+  adFormHeader.disabled = false;
   adFormElement.forEach(function(item) {
-    item.removeAttribute('disabled', 'disabled');
+    item.disabled = false;
   });
 };
 
 
-var getAddress = function(data) {
-  mainPinAddress.setAttribute('value', data.offer.address);
+var getAddress = function() {
+  mainPinAddress.disabled = true;
+  var addressLeft = mainPin.style.left;
+  var addressRight = mainPin.style.top;
+  var x = 'px';
+  var rExp = new RegExp(x, "g");
+  mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressRight.replace(rExp, '')) + Number(VERTICAL_PIN));
 };
 
 
@@ -230,11 +231,11 @@ var createAdsData = function(number) {
       },
       offer: {
         title: titles[getRandomInt(titles.length)],
-        address: '(' + getRandomIntOnInterval(200, 1200) + ', ' + getRandomIntOnInterval(130, 630) + ')',
+        address: '(' + getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END) + ')',
         price: getRandomInt(10000),
         type: getType(type),
-        rooms: getRandomIntOnInterval(1, 6),
-        guests: getRandomInt(10),
+        rooms: getRandomIntOnInterval(1, MAX_ROOMS),
+        guests: getRandomIntOnInterval(1, MAX_GUESTS),
         checkin: times[getRandomInt(times.length)],
         checkout: times[getRandomInt(times.length)],
         features: getQuantity(features),
@@ -242,8 +243,8 @@ var createAdsData = function(number) {
         photos: getPhotos(photos)
       },
       location: {
-        x: getRandomIntOnInterval(200, 1200),
-        y: getRandomIntOnInterval(130, 630)
+        x: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END),
+        y: getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END)
       }
     };
     ads.push(ad);
