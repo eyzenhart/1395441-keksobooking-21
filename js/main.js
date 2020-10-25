@@ -9,6 +9,7 @@ var VERTICAL_MAP_START = 130;
 var VERTICAL_MAP_END = 630;
 var MAX_GUESTS = 3;
 var MAX_ROOMS = 3;
+var NOT_FOR_GUESTS_INDEX = 3;
 
 var enter = 'Enter';
 
@@ -83,7 +84,7 @@ mainPin.addEventListener('keydown', function(evt) {
 
 var guestsCheckHandler = function(event) {
   var rooms = event.target.value;
-  var guests = Array.from(adGuests.options);
+  var guests = Array.prototype.slice.call(adGuests.options);
 
   guests.forEach(function(item, index) {
     if (index < rooms && rooms != '100') {
@@ -95,7 +96,7 @@ var guestsCheckHandler = function(event) {
     }
 
     if (rooms === '100') {
-      guests[3].disabled = false;
+      guests[NOT_FOR_GUESTS_INDEX].disabled = false;
     }
   });
 }
@@ -112,11 +113,11 @@ var timeCheckHandler = function() {
 };
 
 
-adTimeIn.addEventListener('change', timeCheckHandler, false);
+adTimeIn.addEventListener('change', timeCheckHandler);
 
-adType.addEventListener('change', priceCheckHandler, false);
+adType.addEventListener('change', priceCheckHandler);
 
-adRooms.addEventListener('change', guestsCheckHandler, false);
+adRooms.addEventListener('change', guestsCheckHandler);
 
 
 var removeDisability = function() {
