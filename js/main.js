@@ -1,11 +1,29 @@
 'use strict';
 
 var MAX_ADS = 8;
+var HORIZONTAL_PIN = 10;
+var VERTICAL_PIN = 20;
+var HORIZONTAL_MAP_START = 200;
+var HORIZONTAL_MAP_END = 1200;
+var VERTICAL_MAP_START = 130;
+var VERTICAL_MAP_END = 630;
+var MAX_GUESTS = 3;
+var MAX_ROOMS = 3;
+var NOT_FOR_GUESTS_INDEX = 3;
+
+var enter = 'Enter';
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var mainPin = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFormHeader = document.querySelector('.ad-form-header');
+var adFormElement = document.querySelectorAll('.ad-form__element');
+var mapFilters = document.querySelector('.map__filters');
+var mainPinAddress = document.querySelector('#address');
+var adFormSubmitButton = document.querySelector('.ad-form__submit');
 
 var times = ['12:00', '13:00', '14:00'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -19,8 +37,108 @@ var type = {
 var titles = ['Квартира с футуристичным ремонтом', 'Жилье с прекрасным видом на город!', 'Отличное место для остановки туристов', 'Недорогое жилье для молодой семьи', 'Дом в роскошном районе'];
 var descriptions = ['Очень просторно, есть все что необходимо.', 'Тихий район, хорошо развита инфраструктура.', 'Евро-ремонт, доброжелательные соседи, круглосуточный рядом', 'Для тех, кто привык жить в роскоши', 'Апартаменты высочайшего класса', 'Уютное и доступное жилье в историческом центре города'];
 
+var adRooms = document.querySelector('#room_number');
+var adGuests = document.querySelector('#capacity');
 
-map.classList.remove('map--faded');
+var adType = document.querySelector('#type');
+var adPrice = document.querySelector('#price');
+
+var prices = {
+  'bungalow': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+var adTimeIn = document.querySelector('#timein');
+var adTimeOut = document.querySelector('#timeout');
+
+
+adForm.classList.add('ad-form--disabled');
+mapFilters.disabled = true;
+adFormHeader.disabled = true;
+adFormElement.forEach(function(item) {
+  item.disabled = true;
+});
+
+
+
+mainPin.addEventListener('mousedown', function(evt) {
+  if (evt.button === 0) {
+    removeDisability();
+    renderCard(card);
+    renderPins(pinsElements);
+    getAddress();
+  }
+});
+
+
+mainPin.addEventListener('keydown', function(evt) {
+  if (evt.key === enter) {
+    removeDisability();
+    renderCard(card);
+    renderPins(pinsElements);
+  }
+});
+
+
+var guestsCheckHandler = function(event) {
+  var rooms = event.target.value;
+  var guests = Array.prototype.slice.call(adGuests.options);
+
+  guests.forEach(function(item, index) {
+    if (index < rooms && rooms != '100') {
+      item.disabled = false;
+    }
+
+    else {
+      item.disabled = true;
+    }
+
+    if (rooms === '100') {
+      guests[NOT_FOR_GUESTS_INDEX].disabled = false;
+    }
+  });
+}
+
+
+var priceCheckHandler = function(event) {
+  adPrice.placeholder = prices[event.target.value];
+  adPrice.min = prices[event.target.value];
+};
+
+
+var timeCheckHandler = function() {
+  adTimeOut.options[this.selectedIndex].selected = true;
+};
+
+
+adTimeIn.addEventListener('change', timeCheckHandler);
+
+adType.addEventListener('change', priceCheckHandler);
+
+adRooms.addEventListener('change', guestsCheckHandler);
+
+
+var removeDisability = function() {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  mapFilters.disabled = false;
+  adFormHeader.disabled = false;
+  adFormElement.forEach(function(item) {
+    item.disabled = false;
+  });
+};
+
+
+var getAddress = function() {
+  mainPinAddress.disabled = true;
+  var addressLeft = mainPin.style.left;
+  var addressRight = mainPin.style.top;
+  var x = 'px';
+  var rExp = new RegExp(x, "g");
+  mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressRight.replace(rExp, '')) + Number(VERTICAL_PIN));
+};
 
 
 var getRandomIntOnInterval = function(min, max) {
@@ -92,11 +210,11 @@ var createAdsData = function(number) {
       },
       offer: {
         title: titles[getRandomInt(titles.length)],
-        address: '(' + getRandomIntOnInterval(0, 1200) + ', ' + getRandomIntOnInterval(130, 630) + ')',
+        address: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END),
         price: getRandomInt(10000),
         type: getType(type),
-        rooms: getRandomIntOnInterval(1, 6),
-        guests: getRandomInt(10),
+        rooms: getRandomIntOnInterval(1, MAX_ROOMS),
+        guests: getRandomIntOnInterval(1, MAX_GUESTS),
         checkin: times[getRandomInt(times.length)],
         checkout: times[getRandomInt(times.length)],
         features: getQuantity(features),
@@ -104,8 +222,8 @@ var createAdsData = function(number) {
         photos: getPhotos(photos)
       },
       location: {
-        x: getRandomIntOnInterval(0, 1200),
-        y: getRandomIntOnInterval(130, 630)
+        x: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END),
+        y: getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END)
       }
     };
     ads.push(ad);
@@ -121,7 +239,7 @@ var createAdElements = function(data) {
     var adElement = cardTemplate.cloneNode(true);
     adElement.querySelector('.popup__avatar').src = data.author.avatar;
     adElement.querySelector('.popup__title').textContent = data.offer.title;
-    adElement.querySelector('.popup__text--address').textContent = data.offer.address;
+    adElement.querySelector('.popup__text--address').textContent = '(' + data.offer.address + ')';
     adElement.querySelector('.popup__text--price').textContent = data.offer.price;
     adElement.querySelector('.popup__type').textContent = data.offer.type;
     adElement.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
@@ -150,7 +268,7 @@ var createPinElements = function(data) {
 
 var renderCard = function(item) {
   map.appendChild(item);
-}
+};
 
 var pinsElements = createPinElements(adsData);
 
@@ -161,7 +279,4 @@ var renderPins = function(list) {
     fragment.appendChild(item);
   });
   map.appendChild(fragment);
-}
-
-renderCard(card);
-renderPins(pinsElements);
+};
