@@ -42,6 +42,13 @@ var adGuests = document.querySelector('#capacity');
 var adType = document.querySelector('#type');
 var adPrice = document.querySelector('#price');
 
+var prices = {
+  'bungalow': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
 var adTimeIn = document.querySelector('#timein');
 var adTimeOut = document.querySelector('#timeout');
 
@@ -74,68 +81,42 @@ mainPin.addEventListener('keydown', function(evt) {
 });
 
 
-var handlerGuestsCheck = function(event) {
-  for (var i = 0; i < adGuests.length; i++) {
-    if (event.target.value === '100') {
-      adGuests.options[0].disabled = true;
-      adGuests.options[1].disabled = true;
-      adGuests.options[2].disabled = true;
+var guestsCheckHandler = function(event) {
+  var rooms = event.target.value;
+  var guests = Array.from(adGuests.options);
 
-      adGuests.options[3].disabled = false;
+  guests.forEach(function(item, index) {
+    if (index < rooms && rooms != '100') {
+      item.disabled = false;
     }
-    else if (event.target.value === '1') {
-      adGuests.options[0].disabled = true;
-      adGuests.options[1].disabled = true;
-      adGuests.options[3].disabled = true;
 
-      adGuests.options[2].disabled = false;
+    else {
+      item.disabled = true;
     }
-    else if (event.target.value === '2') {
-      adGuests.options[0].disabled = true;
-      adGuests.options[3].disabled = true;
 
-      adGuests.options[1].disabled = false;
-      adGuests.options[2].disabled = false;
+    if (rooms === '100') {
+      guests[3].disabled = false;
     }
-    else if (event.target.value === '3') {
-      adGuests.options[3].disabled = true;
+  });
+}
 
-      adGuests.options[0].disabled = false;
-      adGuests.options[1].disabled = false;
-      adGuests.options[2].disabled = false;
-    }
-  }
-};
 
-var handlerPriceCheck = function() {
-  if (adType.value === 'bungalow') {
-    adPrice.placeholder = '0';
-  }
-  else if (adType.value === 'flat') {
-    adPrice.placeholder = '1000';
-    adPrice.min = 1000;
-  }
-  else if (adType.value === 'house') {
-    adPrice.placeholder = '5000';
-    adPrice.min = 5000;
-  }
-  else if (adType.value === 'palace') {
-    adPrice.placeholder = '10000';
-    adPrice.min = 10000;
-  }
+var priceCheckHandler = function(event) {
+  adPrice.placeholder = prices[event.target.value];
+  adPrice.min = prices[event.target.value];
 };
 
 
-var handlerTimeCheck = function() {
+var timeCheckHandler = function() {
   adTimeOut.options[this.selectedIndex].selected = true;
 };
 
 
-adTimeIn.addEventListener('change', handlerTimeCheck, false);
+adTimeIn.addEventListener('change', timeCheckHandler, false);
 
-adType.addEventListener('change', handlerPriceCheck, false);
+adType.addEventListener('change', priceCheckHandler, false);
 
-adRooms.addEventListener('change', handlerGuestsCheck, false);
+adRooms.addEventListener('change', guestsCheckHandler, false);
 
 
 var removeDisability = function() {
