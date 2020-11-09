@@ -5,7 +5,7 @@
   var key = {
     ESCAPE: 'Escape',
     ENTER: 'Enter'
-  }
+  };
 
 
   window.util = {
