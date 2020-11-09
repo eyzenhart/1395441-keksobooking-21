@@ -34,36 +34,37 @@
     return Math.floor(Math.random() * Math.floor(max));
   };
 
+
   window.card = {
-    createAdsData: function (number) {
-      var ads = [];
-      for (var i = 0; i < number; i++) {
-        var ad = {
-          author: {
-            avatar: 'img/avatars/user' + '0' + (i + 1) + '.png'
-          },
-          offer: {
-            title: titles[getRandomInt(titles.length)],
-            address: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END),
-            price: getRandomInt(10000),
-            type: window.info.getType(Type),
-            rooms: getRandomIntOnInterval(1, MAX_ROOMS),
-            guests: getRandomIntOnInterval(1, MAX_GUESTS),
-            checkin: times[getRandomInt(times.length)],
-            checkout: times[getRandomInt(times.length)],
-            features: window.info.getQuantity(features),
-            description: descriptions[getRandomInt(descriptions.length)],
-            photos: window.info.getPhotos(photos)
-          },
-          location: {
-            x: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END),
-            y: getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END)
-          }
-        };
-        ads.push(ad);
-      }
-      return ads;
-    },
+    // createAdsData: function (number) {
+    //   var ads = [];
+    //   for (var i = 0; i < number; i++) {
+    //     var ad = {
+    //       author: {
+    //         avatar: 'img/avatars/user' + '0' + (i + 1) + '.png'
+    //       },
+    //       offer: {
+    //         title: titles[getRandomInt(titles.length)],
+    //         address: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END) + ', ' + getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END),
+    //         price: getRandomInt(10000),
+    //         type: window.info.getType(Type),
+    //         rooms: getRandomIntOnInterval(1, MAX_ROOMS),
+    //         guests: getRandomIntOnInterval(1, MAX_GUESTS),
+    //         checkin: times[getRandomInt(times.length)],
+    //         checkout: times[getRandomInt(times.length)],
+    //         features: window.info.getQuantity(features),
+    //         description: descriptions[getRandomInt(descriptions.length)],
+    //         photos: window.info.getPhotos(photos)
+    //       },
+    //       location: {
+    //         x: getRandomIntOnInterval(HORIZONTAL_MAP_START, HORIZONTAL_MAP_END),
+    //         y: getRandomIntOnInterval(VERTICAL_MAP_START, VERTICAL_MAP_END)
+    //       }
+    //     };
+    //     ads.push(ad);
+    //   }
+    //   return ads;
+    // },
 
     createAdElements: function (data) {
       var adElement = cardTemplate.cloneNode(true);

@@ -40,17 +40,6 @@
       return typeList[getRandomIntOnInterval(0, typeList.length)];
     },
 
-    // getFeatures: function (arr) {
-    //   var featureFragment = document.createDocumentFragment();
-    //   arr.forEach(function () {
-    //     var newFeature = document.createElement('li');
-    //     newFeature.classList.add('popup__feature', 'popup__feature--' + arr[features]);
-
-    //     featureFragment.appendChild(newFeature);
-    //   });
-    //   return featureFragment;
-    // },
-
     getQuantity: function (arr) {
       for (var i = 0; i < arr.length; i++) {
         var start = getRandomInt(arr.length);

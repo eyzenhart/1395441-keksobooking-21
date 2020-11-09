@@ -11,10 +11,6 @@ var adFormElement = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelector('.map__filters');
 // var adFormSubmitButton = document.querySelector('.ad-form__submit');
 
-var adsData = window.card.createAdsData(MAX_ADS);
-var cardShowed = window.card.createAdElements(adsData[0]);
-var pinsElements = window.pin.createPinElements(adsData);
-
 
 adForm.classList.add('ad-form--disabled');
 mapFilters.disabled = true;
@@ -26,16 +22,20 @@ adFormElement.forEach(function (item) {
 
 mainPin.addEventListener('mousedown', function (evt) {
   window.util.isLeftMouseButton(evt, removeDisability);
-  window.card.render(cardShowed);
-  window.pin.renderPins(pinsElements);
+  window.load(function (list) {
+    var pinElements = window.pin.createPinElements(list);
+    window.pin.renderPins(pinElements);
+  }, function() {});
   window.info.getAddress();
 });
 
 
 mainPin.addEventListener('keydown', function (evt) {
   window.util.isEnterEvent(evt, removeDisability);
-  window.card.render(cardShowed);
-  window.pin.renderPins(pinsElements);
+  window.load(function (list) {
+    var pinElements = window.pin.createPinElements(list);
+    window.pin.renderPins(pinElements);
+  }, function() {});
   window.info.getAddress();
 });
 
