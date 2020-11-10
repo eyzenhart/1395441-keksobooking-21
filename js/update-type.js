@@ -1,10 +1,7 @@
 'use strict';
 
 (function () {
-  // var mapPins = document.querySelectorAll('.map__pin');
-  var map = document.querySelector('.map');
 
-  // console.log(mapPins);
   let newValue;
 
   var filterForm = document.querySelector('.map__filters');
@@ -19,7 +16,10 @@
     newValue = evt.target.value;
 
     const sameTypePins = window.fullData.filter(function(pin) {
-      return pin.offer.type === newValue;
+      if (newValue !=="any") {
+        var typeRes = pin.offer.type === newValue;
+      }
+      return typeRes;
     });
     console.log(sameTypePins);
     var createdSameTypePins = window.pin.createPinElements(sameTypePins);
