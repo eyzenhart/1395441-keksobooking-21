@@ -2,7 +2,7 @@
 
 (function () {
 
-  var key = {
+  var Key = {
     ESCAPE: 'Escape',
     ENTER: 'Enter'
   };
@@ -11,13 +11,13 @@
   window.util = {
 
     isEscEvent: function (evt, action) {
-      if (evt.key === key.ESCAPE) {
+      if (evt.key === Key.ESCAPE) {
         action();
       }
     },
 
     isEnterEvent: function (evt, action) {
-      if (evt.key === key.ENTER) {
+      if (evt.key === Key.ENTER) {
         action();
       }
     },
