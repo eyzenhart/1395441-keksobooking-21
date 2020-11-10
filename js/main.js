@@ -28,6 +28,7 @@ adFormElement.forEach(function (item) {
 var showInfo = function (evt) {
   window.util.isLeftMouseButton(evt, removeDisability);
   window.load(function (list) {
+    window.fullData = list;
     window.uploadedData = list.slice(0, 5);
     var pinElements = window.pin.createPinElements(window.uploadedData);
     window.pin.renderPins(pinElements);
