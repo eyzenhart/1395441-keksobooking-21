@@ -13,11 +13,13 @@
       item.remove();
     });
 
-    newValue = evt.target.value;
 
     const sameTypePins = window.fullData.filter(function(pin) {
-      if (newValue !=="any") {
-        var typeRes = pin.offer.type === newValue;
+      // newValue = evt.target.value;
+      typeRes = true;
+
+      if (evt.target.value !=="any") {
+        var typeRes = pin.offer.type === evt.target.value;
       }
       return typeRes;
     });
