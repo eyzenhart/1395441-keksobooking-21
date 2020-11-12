@@ -4,30 +4,44 @@
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var map = document.querySelector('.map');
 
-
-  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  // var Type = {
-  //   'palace': 'Дворец',
-  //   'flat': 'Квартира',
-  //   'house': 'Дом',
-  //   'bungalow': 'Бунгало'
-  // };
+  var Type = {
+    'palace': 'Дворец',
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalow': 'Бунгало'
+  };
 
   window.card = {
     createAdElements: function (data) {
+      var openedCard = document.querySelector('.map__card');
       var adElement = cardTemplate.cloneNode(true);
       var cardClose = adElement.querySelector('.popup__close');
+      var featuresList = adElement.querySelector('.popup__features');
+
+      if (openedCard !== null) {
+        openedCard.remove();
+      }
 
       adElement.querySelector('.popup__avatar').src = data.author.avatar;
       adElement.querySelector('.popup__title').textContent = data.offer.title;
       adElement.querySelector('.popup__text--address').textContent = '(' + data.offer.address + ')';
       adElement.querySelector('.popup__text--price').textContent = data.offer.price;
-      adElement.querySelector('.popup__type').textContent = data.offer.type;
+      adElement.querySelector('.popup__type').textContent = Type[data.offer.type];
       adElement.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
       adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
-      adElement.querySelector('.popup__feature').textContent = data.offer.features;
+      featuresList.innerHTML = '';
+
+      var featuresFragment = document.createDocumentFragment();
+      data.offer.features.forEach(function(item) {
+        var feature = document.createElement('li');
+        feature.classList.add('popup__feature', 'popup__feature--' + item);
+        featuresFragment.appendChild(feature);
+      });
+      featuresList.appendChild(featuresFragment);
+
       adElement.querySelector('.popup__description').textContent = data.offer.description;
-      adElement.querySelector('.popup__photos').appendChild(window.info.getPhotos(photos));
+      adElement.querySelector('.popup__photos').appendChild(window.info.getPhotos(data.offer.photos));
+
       cardClose.addEventListener('click', function () {
         adElement.remove();
       });
@@ -37,7 +51,6 @@
           adElement.remove();
         })
       });
-
       return adElement;
     },
 
