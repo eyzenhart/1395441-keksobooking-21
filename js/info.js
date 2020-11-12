@@ -8,11 +8,11 @@
   var mainPin = document.querySelector('.map__pin--main');
 
 
-  var getRandomIntOnInterval = function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  };
+  // var getRandomIntOnInterval = function (min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min)) + min;
+  // };
 
 
   var getRandomInt = function (max) {
@@ -30,15 +30,15 @@
       mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressRight.replace(rExp, '')) + Number(VERTICAL_PIN));
     },
 
-    getType: function (list) {
-      var typeList = [];
-      for (var listItem in list) {
-        if (list.hasOwnProperty(listItem)) {
-          typeList.push(list[listItem]);
-        }
-      }
-      return typeList[getRandomIntOnInterval(0, typeList.length)];
-    },
+    // getType: function (list) {
+    //   var typeList = [];
+    //   for (var listItem in list) {
+    //     if (list.hasOwnProperty(listItem)) {
+    //       typeList.push(list[listItem]);
+    //     }
+    //   }
+    //   return typeList[getRandomIntOnInterval(0, typeList.length)];
+    // },
 
     getQuantity: function (arr) {
       for (var i = 0; i < arr.length; i++) {
