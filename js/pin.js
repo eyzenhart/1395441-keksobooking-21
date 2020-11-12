@@ -14,7 +14,7 @@
         pinElement.style = 'left: ' + item.location.x + 'px; top: ' + item.location.y + 'px;';
         pinElement.querySelector('img').src = item.author.avatar;
         pinElement.addEventListener('click', function () {
-          var newAd = window.card.createAdElements(item);
+          var newAd = window.card.createAdElement(item);
           window.card.render(newAd);
         });
         pinElements.push(pinElement);

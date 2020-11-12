@@ -9,7 +9,6 @@ var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElement = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelector('.map__filters');
 var mapPins = document.querySelectorAll('.map__pin');
-// var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 
 adForm.classList.add('ad-form--disabled');

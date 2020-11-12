@@ -5,7 +5,7 @@
   var VERTICAL_PIN = 20;
 
   var mainPinAddress = document.querySelector('#address');
-  var mainPin = document.querySelector('.map__pin--main');
+  // var mainPin = document.querySelector('.map__pin--main');
 
 
   // var getRandomIntOnInterval = function (min, max) {
@@ -23,22 +23,12 @@
   window.info = {
     getAddress: function () {
       mainPinAddress.disabled = true;
-      var addressLeft = mainPin.style.left;
-      var addressRight = mainPin.style.top;
+      var addressLeft = window.mainPin.style.left;
+      var addressTop = window.mainPin.style.top;
       var x = 'px';
       var rExp = new RegExp(x, "g");
-      mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressRight.replace(rExp, '')) + Number(VERTICAL_PIN));
+      mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressTop.replace(rExp, '')) + Number(VERTICAL_PIN));
     },
-
-    // getType: function (list) {
-    //   var typeList = [];
-    //   for (var listItem in list) {
-    //     if (list.hasOwnProperty(listItem)) {
-    //       typeList.push(list[listItem]);
-    //     }
-    //   }
-    //   return typeList[getRandomIntOnInterval(0, typeList.length)];
-    // },
 
     getQuantity: function (arr) {
       for (var i = 0; i < arr.length; i++) {
@@ -64,6 +54,16 @@
         photoFragment.appendChild(photo);
       });
       return photoFragment;
+    },
+
+    getFeatures: function (data) {
+      var featuresFragment = document.createDocumentFragment();
+      data.offer.features.forEach(function(item) {
+        var feature = document.createElement('li');
+        feature.classList.add('popup__feature', 'popup__feature--' + item);
+        featuresFragment.appendChild(feature);
+      });
+      return featuresFragment;
     }
   };
 })();

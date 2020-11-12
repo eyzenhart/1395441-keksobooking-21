@@ -1,7 +1,5 @@
 'use strict';
 
-//  валидация формы
-
 (function () {
   var oneHundredRooms = '100';
   var adRooms = document.querySelector('#room_number');
@@ -9,7 +7,6 @@
   var adType = document.querySelector('#type');
   var adPrice = document.querySelector('#price');
 
-  // var NOT_FOR_GUESTS_INDEX = 3;
   var Prices = {
     'bungalow': 0,
     'flat': 1000,
