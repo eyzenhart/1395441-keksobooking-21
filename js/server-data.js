@@ -63,17 +63,14 @@
 
   window.upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
-    console.log(xhr.status);
 
     xhr.responseType = JSON_TYPE;
     xhr.addEventListener('load', function () {
-
-    if (xhr.status === Code.SUCCESS) {
-      onSuccess(xhr.response);
-    }
-    else {
-      onError();
-    }
+      if (xhr.status === Code.SUCCESS) {
+        onSuccess(xhr.response);
+      } else {
+        onError();
+      }
   });
 
 

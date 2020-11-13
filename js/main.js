@@ -11,7 +11,7 @@ var mapFilters = document.querySelector('.map__filters');
 // var mapPins = document.querySelectorAll('.map__pin');
 var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 var successTemplate = document.querySelector('#success').content.querySelector('.success');
-
+var resetFormButton = document.querySelector('.ad-form__reset');
 
 var disablePage = function () {
   var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -26,31 +26,43 @@ var disablePage = function () {
   adFormElement.forEach(function (item) {
     item.disabled = true;
   });
+  mainPin.addEventListener('mousedown', activatePage);
+  mainPin.addEventListener('keydown', activatePage);
 };
 
+resetFormButton.addEventListener('click', function() {
+  adForm.reset();
+})
+
 adForm.addEventListener('submit', function (evt) {
-  console.log(adForm);
-  console.log(new FormData(adForm));
+  evt.preventDefault();
   window.upload(new FormData(adForm),
     function (response) {
       var successElement = successTemplate.cloneNode(true);
       map.appendChild(successElement);
-      // document.addEventListener('click', function (evt) {
-      //   window.util.isLeftMouseButton(evt, successElement.remove());
-      // })
+      document.addEventListener('keydown', function () {
+        window.util.isEscEvent(evt, successElement.remove());
+      });
+      document.addEventListener('click', function () {
+        window.utilisLeftMouseButton(evt, successElement.remove());
+      });
     },
     function () {
       var errorElement = errorTemplate.cloneNode(true);
       var errorButton = errorElement.querySelector('.error__button');
       map.appendChild(errorElement);
+      document.addEventListener('keydown', function () {
+        window.util.isEscEvent(evt, errorElement.remove());
+      });
+      document.addEventListener('click', function () {
+        window.util.isLeftMouseButton(evt, errorElement.remove());
+      });
       errorButton.addEventListener('click', function () {
         errorElement.remove();
       });
     });
-  evt.preventDefault();
   disablePage();
 });
-
 
 
 var activatePage = function (evt) {
@@ -75,8 +87,3 @@ var activatePage = function (evt) {
 };
 
 disablePage();
-
-mainPin.addEventListener('mousedown', activatePage);
-
-mainPin.addEventListener('keydown', activatePage);
-
