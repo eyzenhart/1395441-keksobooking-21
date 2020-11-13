@@ -1,19 +1,7 @@
 'use strict';
 
 (function () {
-  var HORIZONTAL_PIN = 10;
-  var VERTICAL_PIN = 20;
-
   var mainPinAddress = document.querySelector('#address');
-  // var mainPin = document.querySelector('.map__pin--main');
-
-
-  // var getRandomIntOnInterval = function (min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min)) + min;
-  // };
-
 
   var getRandomInt = function (max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -23,11 +11,15 @@
   window.info = {
     getAddress: function () {
       mainPinAddress.disabled = true;
-      var addressLeft = window.mainPin.style.left;
-      var addressTop = window.mainPin.style.top;
-      var x = 'px';
-      var rExp = new RegExp(x, "g");
-      mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + HORIZONTAL_PIN + ', ' + (Number(addressTop.replace(rExp, '')) + Number(VERTICAL_PIN));
+      // var addressLeft = window.mainPin.style.left;
+      // var addressTop = window.mainPin.style.top;
+      // var x = 'px';
+      // var rExp = new RegExp(x, "g");
+      // mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + (HORIZONTAL_PIN * 2) + ', ' + (Number(addressTop.replace(rExp, '')) + Number(VERTICAL_PIN));
+      var leftOffset = Math.floor(window.mainPin.offsetLeft + window.mainPin.offsetWidth / 2);
+      var topOffest = window.mainPin.offsetTop + window.mainPin.offsetHeight + window.PIN_TIP_HEIGHT;
+
+      mainPinAddress.value = leftOffset + ', ' + topOffest;
     },
 
     getQuantity: function (arr) {

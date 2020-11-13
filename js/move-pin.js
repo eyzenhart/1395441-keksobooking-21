@@ -14,7 +14,7 @@
     }
   };
 
-  var PIN_TIP_HEIGHT = 22;
+  window.PIN_TIP_HEIGHT = 22;
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -48,10 +48,10 @@
         mainPin.style.left = DRAG_LIMIT.x.min - mainPin.offsetWidth / 2 + 'px';
       }
 
-      if (mainPin.offsetTop > DRAG_LIMIT.y.max - mainPin.offsetHeight - PIN_TIP_HEIGHT) {
-        mainPin.style.top = DRAG_LIMIT.y.max - mainPin.offsetHeight - PIN_TIP_HEIGHT + 'px';
-      } else if (mainPin.offsetTop < DRAG_LIMIT.y.min - mainPin.offsetHeight - PIN_TIP_HEIGHT) {
-        mainPin.style.top = DRAG_LIMIT.y.min - mainPin.offsetHeight - PIN_TIP_HEIGHT + 'px';
+      if (mainPin.offsetTop > DRAG_LIMIT.y.max - mainPin.offsetHeight - window.PIN_TIP_HEIGHT) {
+        mainPin.style.top = DRAG_LIMIT.y.max - mainPin.offsetHeight - window.PIN_TIP_HEIGHT + 'px';
+      } else if (mainPin.offsetTop < DRAG_LIMIT.y.min - mainPin.offsetHeight - window.PIN_TIP_HEIGHT) {
+        mainPin.style.top = DRAG_LIMIT.y.min - mainPin.offsetHeight - window.PIN_TIP_HEIGHT + 'px';
       }
     };
 

@@ -30,14 +30,6 @@
       adElement.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
       adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
       featuresList.innerHTML = '';
-
-      // var featuresFragment = document.createDocumentFragment();
-      // data.offer.features.forEach(function(item) {
-      //   var feature = document.createElement('li');
-      //   feature.classList.add('popup__feature', 'popup__feature--' + item);
-      //   featuresFragment.appendChild(feature);
-      // });
-      // window.info.getFeatures(data);
       featuresList.appendChild(window.info.getFeatures(data));
 
       adElement.querySelector('.popup__description').textContent = data.offer.description;
