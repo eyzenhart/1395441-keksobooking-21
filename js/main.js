@@ -8,15 +8,49 @@ var adForm = document.querySelector('.ad-form');
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElement = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelector('.map__filters');
-var mapPins = document.querySelectorAll('.map__pin');
+// var mapPins = document.querySelectorAll('.map__pin');
+var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
 
-adForm.classList.add('ad-form--disabled');
-mapFilters.disabled = true;
-adFormHeader.disabled = true;
-adFormElement.forEach(function (item) {
-  item.disabled = true;
+var disablePage = function () {
+  var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  mapPins.forEach(function(item) {
+    item.remove();
+  });
+  map.classList.add('map--faded');
+  adForm.reset();
+  adForm.classList.add('ad-form--disabled');
+  mapFilters.disabled = true;
+  adFormHeader.disabled = true;
+  adFormElement.forEach(function (item) {
+    item.disabled = true;
+  });
+};
+
+adForm.addEventListener('submit', function (evt) {
+  console.log(adForm);
+  console.log(new FormData(adForm));
+  window.upload(new FormData(adForm),
+    function (response) {
+      var successElement = successTemplate.cloneNode(true);
+      map.appendChild(successElement);
+      // document.addEventListener('click', function (evt) {
+      //   window.util.isLeftMouseButton(evt, successElement.remove());
+      // })
+    },
+    function () {
+      var errorElement = errorTemplate.cloneNode(true);
+      var errorButton = errorElement.querySelector('.error__button');
+      map.appendChild(errorElement);
+      errorButton.addEventListener('click', function () {
+        errorElement.remove();
+      });
+    });
+  evt.preventDefault();
+  disablePage();
 });
+
 
 
 var activatePage = function (evt) {
@@ -40,6 +74,9 @@ var activatePage = function (evt) {
   mainPin.removeEventListener('mousedown', activatePage);
 };
 
+disablePage();
+
 mainPin.addEventListener('mousedown', activatePage);
 
 mainPin.addEventListener('keydown', activatePage);
+
