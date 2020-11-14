@@ -8,15 +8,60 @@ var adForm = document.querySelector('.ad-form');
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElement = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelector('.map__filters');
-var mapPins = document.querySelectorAll('.map__pin');
-// var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+// var mapPins = document.querySelectorAll('.map__pin');
+var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+var successTemplate = document.querySelector('#success').content.querySelector('.success');
+var resetFormButton = document.querySelector('.ad-form__reset');
 
+var disablePage = function () {
+  var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  mapPins.forEach(function(item) {
+    item.remove();
+  });
+  map.classList.add('map--faded');
+  adForm.reset();
+  adForm.classList.add('ad-form--disabled');
+  mapFilters.disabled = true;
+  adFormHeader.disabled = true;
+  adFormElement.forEach(function (item) {
+    item.disabled = true;
+  });
+  mainPin.addEventListener('mousedown', activatePage);
+  mainPin.addEventListener('keydown', activatePage);
+};
 
-adForm.classList.add('ad-form--disabled');
-mapFilters.disabled = true;
-adFormHeader.disabled = true;
-adFormElement.forEach(function (item) {
-  item.disabled = true;
+resetFormButton.addEventListener('click', function() {
+  adForm.reset();
+})
+
+adForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  window.upload(new FormData(adForm),
+    function (response) {
+      var successElement = successTemplate.cloneNode(true);
+      map.appendChild(successElement);
+      document.addEventListener('keydown', function () {
+        window.util.isEscEvent(evt, successElement.remove());
+      });
+      document.addEventListener('click', function () {
+        window.util.isLeftMouseButton(evt, successElement.remove());
+      });
+    },
+    function () {
+      var errorElement = errorTemplate.cloneNode(true);
+      var errorButton = errorElement.querySelector('.error__button');
+      map.appendChild(errorElement);
+      document.addEventListener('keydown', function () {
+        window.util.isEscEvent(evt, errorElement.remove());
+      });
+      document.addEventListener('click', function () {
+        window.util.isLeftMouseButton(evt, errorElement.remove());
+      });
+      errorButton.addEventListener('click', function () {
+        errorElement.remove();
+      });
+    });
+  disablePage();
 });
 
 
@@ -41,6 +86,4 @@ var activatePage = function (evt) {
   mainPin.removeEventListener('mousedown', activatePage);
 };
 
-mainPin.addEventListener('mousedown', activatePage);
-
-mainPin.addEventListener('keydown', activatePage);
+disablePage();
