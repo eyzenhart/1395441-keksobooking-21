@@ -44,7 +44,7 @@ adForm.addEventListener('submit', function (evt) {
         window.util.isEscEvent(evt, successElement.remove());
       });
       document.addEventListener('click', function () {
-        window.utilisLeftMouseButton(evt, successElement.remove());
+        window.util.isLeftMouseButton(evt, successElement.remove());
       });
     },
     function () {

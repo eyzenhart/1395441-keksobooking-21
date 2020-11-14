@@ -10,7 +10,7 @@
 
   window.info = {
     getAddress: function () {
-      mainPinAddress.disabled = true;
+      // mainPinAddress.disabled = true;
       // var addressLeft = window.mainPin.style.left;
       // var addressTop = window.mainPin.style.top;
       // var x = 'px';
