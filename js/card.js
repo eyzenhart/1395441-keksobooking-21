@@ -42,7 +42,7 @@
       document.addEventListener('keydown', function (evt) {
         window.util.isEscEvent(evt, function () {
           adElement.remove();
-        })
+        });
       });
       return adElement;
     },

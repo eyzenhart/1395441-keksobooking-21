@@ -14,11 +14,13 @@ var resetFormButton = document.querySelector('.ad-form__reset');
 
 var disablePage = function () {
   var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  mapPins.forEach(function(item) {
+  mapPins.forEach(function (item) {
     item.remove();
   });
   map.classList.add('map--faded');
   adForm.reset();
+  // mainPin.style.top = 375 + 'px'; // работает, но после активации в адресную строку записывается не то значение
+  // mainPin.style.left = 570 + 'px';
   adForm.classList.add('ad-form--disabled');
   mapFilters.disabled = true;
   adFormHeader.disabled = true;
@@ -29,37 +31,36 @@ var disablePage = function () {
   mainPin.addEventListener('keydown', activatePage);
 };
 
-resetFormButton.addEventListener('click', function() {
+resetFormButton.addEventListener('click', function () {
   adForm.reset();
-})
+  disablePage();
+});
 
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  window.upload(new FormData(adForm),
-    function (response) {
-      var successElement = successTemplate.cloneNode(true);
-      map.appendChild(successElement);
-      document.addEventListener('keydown', function () {
-        window.util.isEscEvent(evt, successElement.remove());
-      });
-      document.addEventListener('click', function () {
-        window.util.isLeftMouseButton(evt, successElement.remove());
-      });
-    },
-    function () {
-      var errorElement = errorTemplate.cloneNode(true);
-      var errorButton = errorElement.querySelector('.error__button');
-      map.appendChild(errorElement);
-      document.addEventListener('keydown', function () {
-        window.util.isEscEvent(evt, errorElement.remove());
-      });
-      document.addEventListener('click', function () {
-        window.util.isLeftMouseButton(evt, errorElement.remove());
-      });
-      errorButton.addEventListener('click', function () {
-        errorElement.remove();
-      });
+  window.upload(new FormData(adForm), function () {
+    var successElement = successTemplate.cloneNode(true);
+    map.appendChild(successElement);
+    document.addEventListener('keydown', function () {
+      window.util.isEscEvent(evt, successElement.remove());
     });
+    document.addEventListener('click', function () {
+      window.util.isLeftMouseButton(evt, successElement.remove());
+    });
+  }, function () {
+    var errorElement = errorTemplate.cloneNode(true);
+    var errorButton = errorElement.querySelector('.error__button');
+    map.appendChild(errorElement);
+    document.addEventListener('keydown', function () {
+      window.util.isEscEvent(evt, errorElement.remove());
+    });
+    document.addEventListener('click', function () {
+      window.util.isLeftMouseButton(evt, errorElement.remove());
+    });
+    errorButton.addEventListener('click', function () {
+      errorElement.remove();
+    });
+  });
   disablePage();
 });
 
@@ -80,7 +81,16 @@ var activatePage = function (evt) {
     window.uploadedData = list.slice(0, MAX_ADS);
     var pinElements = window.pin.createPinElements(window.uploadedData);
     window.pin.renderPins(pinElements);
-  }, function () {});
+  }, function (error) {
+    var loadErrorElement = errorTemplate.cloneNode(true);
+    var loadErrorMessage = loadErrorElement.querySelector('.error__message');
+    var loadErrorButton = loadErrorElement.querySelector('.error__button');
+    loadErrorButton.addEventListener('click', function () {
+      loadErrorElement.remove();
+    });
+    map.appendChild(loadErrorElement);
+    loadErrorMessage.textContent = error;
+  });
   window.info.getAddress();
   mainPin.removeEventListener('mousedown', activatePage);
 };

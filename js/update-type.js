@@ -17,7 +17,7 @@
 
     if (openedCard) {
       openedCard.remove();
-    };
+    }
 
     mapPins.forEach(function (item) {
       item.remove();
@@ -31,11 +31,11 @@
 
       if (typeFilter.value !== "any") {
         typeRes = pin.offer.type === typeFilter.value;
-      };
+      }
 
       if (priceFilter.value !== "any") {
         priceRes = pin.offer.price === priceFilter.value;
-        switch(priceFilter.value) {
+        switch (priceFilter.value) {
           case 'low':
             priceRes = pin.offer.price < LOW_PRICE;
             break;
@@ -45,16 +45,16 @@
           case 'middle':
             priceRes = pin.offer.price < HIGHT_PRICE && pin.offer.price > LOW_PRICE;
             break;
-        };
-      };
+        }
+      }
 
       if (roomsFilter.value !== "any") {
         roomsRes = pin.offer.rooms === Number(roomsFilter.value);
-      };
+      }
 
       if (guestsFilter.value !== "any") {
         guestsRes = pin.offer.guests === Number(guestsFilter.value);
-      };
+      }
 
       return typeRes && priceRes && roomsRes && guestsRes;
     });
@@ -63,7 +63,9 @@
     window.pin.renderPins(createdSamePins);
   };
 
-  filterForm.addEventListener('change', window.debounce(filterData));
+  filterForm.addEventListener('change', function () {
+    window.debounce(filterData);
+  });
 
 })();
 

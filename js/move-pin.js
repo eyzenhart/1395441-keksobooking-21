@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  window.mainPin = document.querySelector('.map__pin--main');
 
   var DRAG_LIMIT = {
     x: {
@@ -15,6 +14,9 @@
   };
 
   window.PIN_TIP_HEIGHT = 22;
+
+  var mainPin = document.querySelector('.map__pin--main');
+
 
   mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -64,6 +66,6 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-  })
+  });
 
 })();
