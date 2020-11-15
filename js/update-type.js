@@ -2,21 +2,28 @@
 
 (function () {
 
+  var LOW_PRICE = 10000;
+  var HIGHT_PRICE = 50000;
+
   var filterForm = document.querySelector('.map__filters');
   var priceFilter = filterForm.querySelector('#housing-price');
   var typeFilter = filterForm.querySelector('#housing-type');
   var roomsFilter = filterForm.querySelector('#housing-rooms');
   var guestsFilter = filterForm.querySelector('#housing-guests');
 
-
-  filterForm.addEventListener('change', function (evt) {
+  var filterData = function () {
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var openedCard = document.querySelector('.map__card');
+
+    if (openedCard) {
+      openedCard.remove();
+    };
 
     mapPins.forEach(function (item) {
       item.remove();
     });
 
-    const sameTypePins = window.fullData.filter(function (pin) {
+    const filteredData = window.fullData.filter(function (pin) {
       var typeRes = true;
       var priceRes = true;
       var roomsRes = true;
@@ -30,13 +37,13 @@
         priceRes = pin.offer.price === priceFilter.value;
         switch(priceFilter.value) {
           case 'low':
-            priceRes = pin.offer.price < 10000;
+            priceRes = pin.offer.price < LOW_PRICE;
             break;
           case 'high':
-            priceRes = pin.offer.price > 50000;
+            priceRes = pin.offer.price > HIGHT_PRICE;
             break;
           case 'middle':
-            priceRes = pin.offer.price > 50000;
+            priceRes = pin.offer.price < HIGHT_PRICE && pin.offer.price > LOW_PRICE;
             break;
         };
       };
@@ -52,8 +59,11 @@
       return typeRes && priceRes && roomsRes && guestsRes;
     });
 
-    var createdSameTypePins = window.pin.createPinElements(sameTypePins.slice(0, 4));
-    window.debounce(window.pin.renderPins(createdSameTypePins));
-  });
+    var createdSamePins = window.pin.createPinElements(filteredData.slice(0, 4));
+    window.pin.renderPins(createdSamePins);
+  };
+
+  filterForm.addEventListener('change', window.debounce(filterData));
+
 })();
 

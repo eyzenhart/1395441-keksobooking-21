@@ -8,7 +8,6 @@ var adForm = document.querySelector('.ad-form');
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElement = document.querySelectorAll('.ad-form__element');
 var mapFilters = document.querySelector('.map__filters');
-// var mapPins = document.querySelectorAll('.map__pin');
 var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 var successTemplate = document.querySelector('#success').content.querySelector('.success');
 var resetFormButton = document.querySelector('.ad-form__reset');
