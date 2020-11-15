@@ -2,6 +2,8 @@
 
 (function () {
 
+  var REQUEST_TIMEOUT = 10000;
+
   var Code = {
     SUCCESS: 200,
     WRONG_REQUEST: 400,
@@ -10,8 +12,6 @@
   };
 
   var JSON_TYPE = 'json';
-
-  var REQUEST_TIMEOUT = 10000;
 
   var URL = 'https://21.javascript.pages.academy/keksobooking/data';
 
@@ -71,10 +71,9 @@
       } else {
         onError();
       }
-  });
+    });
 
-
-  xhr.open('POST', sendURL);
-  xhr.send(data);
-};
+    xhr.open('POST', sendURL);
+    xhr.send(data);
+  };
 })();

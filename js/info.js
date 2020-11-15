@@ -10,15 +10,8 @@
 
   window.info = {
     getAddress: function () {
-      // mainPinAddress.disabled = true;
-      // var addressLeft = window.mainPin.style.left;
-      // var addressTop = window.mainPin.style.top;
-      // var x = 'px';
-      // var rExp = new RegExp(x, "g");
-      // mainPinAddress.value = Number(addressLeft.replace(rExp, '')) + (HORIZONTAL_PIN * 2) + ', ' + (Number(addressTop.replace(rExp, '')) + Number(VERTICAL_PIN));
       var leftOffset = Math.floor(window.mainPin.offsetLeft + window.mainPin.offsetWidth / 2);
       var topOffest = window.mainPin.offsetTop + window.mainPin.offsetHeight + window.PIN_TIP_HEIGHT;
-
       mainPinAddress.value = leftOffset + ', ' + topOffest;
     },
 
@@ -50,7 +43,7 @@
 
     getFeatures: function (data) {
       var featuresFragment = document.createDocumentFragment();
-      data.offer.features.forEach(function(item) {
+      data.offer.features.forEach(function (item) {
         var feature = document.createElement('li');
         feature.classList.add('popup__feature', 'popup__feature--' + item);
         featuresFragment.appendChild(feature);
