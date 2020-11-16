@@ -10,6 +10,7 @@
   var typeFilter = filterForm.querySelector('#housing-type');
   var roomsFilter = filterForm.querySelector('#housing-rooms');
   var guestsFilter = filterForm.querySelector('#housing-guests');
+  var featuresFilter = filterForm.querySelector('#housing-features');
 
   var filterData = function () {
     var mapPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -28,6 +29,9 @@
       var priceRes = true;
       var roomsRes = true;
       var guestsRes = true;
+      var featuresRes = true;
+
+      var features = featuresFilter.querySelectorAll('.map__checkbox:checked');
 
       if (typeFilter.value !== "any") {
         typeRes = pin.offer.type === typeFilter.value;
@@ -56,7 +60,13 @@
         guestsRes = pin.offer.guests === Number(guestsFilter.value);
       }
 
-      return typeRes && priceRes && roomsRes && guestsRes;
+      features.forEach(function (item) {
+        if (!pin.offer.features.includes(item.value)) {
+          featuresRes = false;
+        }
+      });
+
+      return typeRes && priceRes && roomsRes && guestsRes && featuresRes;
     });
 
     var createdSamePins = window.pin.createPinElements(filteredData.slice(0, 4));
