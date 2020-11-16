@@ -970,6 +970,8 @@ fieldset {
 }
 
 
+
+
 /* Вспомогательные экраны
    ========================================================================== */
 
@@ -1223,6 +1225,11 @@ fieldset {
 .error__button:active {
   outline: none;
   opacity: 0.6;
+}
+
+.invalid-input {
+  box-shadow: none !important;
+  border: 2px solid red !important;
 }
 
 .visually-hidden {

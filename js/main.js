@@ -1,6 +1,8 @@
 'use strict';
 
 var MAX_ADS = 5;
+var START_TOP = 375;
+var START_LEFT = 570;
 
 var map = document.querySelector('.map');
 var mainPin = document.querySelector('.map__pin--main');
@@ -19,8 +21,8 @@ var disablePage = function () {
   });
   map.classList.add('map--faded');
   adForm.reset();
-  // mainPin.style.top = 375 + 'px'; // работает, но после активации в адресную строку записывается не то значение
-  // mainPin.style.left = 570 + 'px';
+  mainPin.style.top = START_TOP + 'px';
+  mainPin.style.left = START_LEFT + 'px';
   adForm.classList.add('ad-form--disabled');
   mapFilters.disabled = true;
   adFormHeader.disabled = true;
