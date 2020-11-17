@@ -25,11 +25,7 @@
       var guests = Array.prototype.slice.call(adGuests.options);
 
       guests.forEach(function (item, index) {
-        if (index < rooms && rooms !== oneHundredRooms) {
-          item.disabled = false;
-        } else {
-          item.disabled = true;
-        }
+        item.disabled = index < rooms && rooms !== oneHundredRooms;
         if (rooms === oneHundredRooms) {
           guests[guests.length - 1].disabled = false;
         }
