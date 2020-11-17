@@ -24,7 +24,7 @@
       item.remove();
     });
 
-    const filteredData = window.fullData.filter(function (pin) {
+    var filteredData = window.fullData.filter(function (pin) {
       var typeRes = true;
       var priceRes = true;
       var roomsRes = true;

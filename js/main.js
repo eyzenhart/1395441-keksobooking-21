@@ -76,25 +76,24 @@ var activatePage = function (evt) {
     adFormElement.forEach(function (item) {
       item.disabled = false;
     });
-  });
-
-  window.load(function (list) {
-    window.fullData = list;
-    window.uploadedData = list.slice(0, MAX_ADS);
-    var pinElements = window.pin.createPinElements(window.uploadedData);
-    window.pin.renderPins(pinElements);
-  }, function (error) {
-    var loadErrorElement = errorTemplate.cloneNode(true);
-    var loadErrorMessage = loadErrorElement.querySelector('.error__message');
-    var loadErrorButton = loadErrorElement.querySelector('.error__button');
-    loadErrorButton.addEventListener('click', function () {
-      loadErrorElement.remove();
+    window.load(function (list) {
+      window.fullData = list;
+      window.uploadedData = list.slice(0, MAX_ADS);
+      var pinElements = window.pin.createPinElements(window.uploadedData);
+      window.pin.renderPins(pinElements);
+    }, function (error) {
+      var loadErrorElement = errorTemplate.cloneNode(true);
+      var loadErrorMessage = loadErrorElement.querySelector('.error__message');
+      var loadErrorButton = loadErrorElement.querySelector('.error__button');
+      loadErrorButton.addEventListener('click', function () {
+        loadErrorElement.remove();
+      });
+      map.appendChild(loadErrorElement);
+      loadErrorMessage.textContent = error;
     });
-    map.appendChild(loadErrorElement);
-    loadErrorMessage.textContent = error;
+    window.info.getAddress();
+    mainPin.removeEventListener('mousedown', activatePage);
   });
-  window.info.getAddress();
-  mainPin.removeEventListener('mousedown', activatePage);
 };
 
 disablePage();
